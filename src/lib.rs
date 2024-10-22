@@ -21,8 +21,15 @@ A collection of excellent utilities for nom, including:
   error locations in nom errors, which are usually just suffixes of the
   input, into more useful locations, such as a line and column number.
 */
-
 #![deny(missing_docs)]
+#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg(feature = "alloc")]
+#![cfg_attr(feature = "docsrs", feature(doc_cfg))]
+#![allow(clippy::doc_markdown)]
+#![deny(missing_docs)]
+#[macro_use]
+extern crate alloc;
+
 
 /**
 Call a method or methods on an object, and then return the original object.
@@ -39,6 +46,51 @@ macro_rules! express {
     }};
 }
 
+/// Lib module to re-export everything needed from `std` or `core`/`alloc`. This is how `serde` does
+/// it, albeit there it is not public.
+pub mod lib {
+    /// `std` facade allowing `std`/`core` to be interchangeable. Reexports `alloc` crate optionally,
+    /// as well as `core` or `std`
+    #[cfg(not(feature = "std"))]
+    /// internal std exports for no_std compatibility
+    pub mod std {
+        #[doc(hidden)]
+        #[cfg(not(feature = "alloc"))]
+        pub use core::borrow;
+
+        #[cfg(feature = "alloc")]
+        pub use alloc::{borrow, boxed, string, vec};
+
+        #[doc(hidden)]
+        pub use core::{cmp, convert, fmt, iter, mem, num, ops, option, result, slice, str};
+
+        pub use core::error;
+
+        /// internal reproduction of std prelude
+        #[doc(hidden)]
+        pub mod prelude {
+            pub use core::prelude as v1;
+        }
+    }
+
+    #[cfg(feature = "std")]
+    /// internal std exports for no_std compatibility
+    pub mod std {
+        #[doc(hidden)]
+        pub use std::{
+            alloc, borrow, boxed, cmp, collections, convert, fmt, hash, iter, mem, num, ops, option,
+            result, slice, str, string, vec,
+        };
+
+        /// internal reproduction of std prelude
+        #[doc(hidden)]
+        pub mod prelude {
+            pub use std::prelude as v1;
+        }
+    }
+}
+
+
 pub mod context;
 pub mod error;
 pub mod final_parser;
@@ -47,3 +99,11 @@ pub mod parser_ext;
 pub mod tag;
 
 pub use parser_ext::ParserExt;
+
+
+
+/// test documentation
+#[test]
+pub fn test() {
+
+}

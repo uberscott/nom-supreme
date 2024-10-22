@@ -352,6 +352,7 @@ where
 #[cfg(test)]
 mod test_separated_terminated {
     use cool_asserts::assert_matches;
+    use crate::lib::std::vec::Vec;
     use nom::{
         branch::alt,
         character::complete::{alpha0, char, digit1, space0},

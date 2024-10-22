@@ -2,17 +2,16 @@
 //! information about parse failures than the built-in nom error types.
 //! Requires the `error` feature to be enabled.
 
-use std::{
+use crate::lib::std::boxed::Box;
+use crate::lib::std::vec::Vec;
+use crate::lib::std::{
     error::Error,
     fmt::{self, Debug, Display, Formatter, Write},
 };
 
 use indent_write::fmt::IndentWriter;
 use joinery::JoinableIterator;
-use nom::{
-    error::{ErrorKind as NomErrorKind, FromExternalError, ParseError},
-    ErrorConvert, InputLength,
-};
+use nom::{error::{ErrorKind as NomErrorKind, FromExternalError, ParseError}, ErrorConvert, InputLength};
 
 use crate::{
     context::ContextError,
