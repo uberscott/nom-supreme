@@ -7,7 +7,10 @@ use crate::lib::std::vec::Vec;
 use crate::lib::std::{
     error::Error,
     fmt::{self, Debug, Display, Formatter, Write},
+    convert::AsRef
 };
+
+
 
 use indent_write::fmt::IndentWriter;
 use joinery::JoinableIterator;
@@ -623,7 +626,7 @@ where
     }
 }
 
-impl<I, T: AsRef<[u8]>, C, E> TagError<I, T> for GenericErrorTree<I, T, C, E> {
+impl<I, T: crate::lib::std::convert::AsRef<[u8]>, C, E> TagError<I, T> for GenericErrorTree<I, T, C, E> {
     fn from_tag(location: I, tag: T) -> Self {
         GenericErrorTree::Base {
             location,

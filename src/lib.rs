@@ -24,9 +24,6 @@ A collection of excellent utilities for nom, including:
 #![deny(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg(feature = "alloc")]
-#![cfg_attr(feature = "docsrs", feature(doc_cfg))]
-#![allow(clippy::doc_markdown)]
-#![deny(missing_docs)]
 #[macro_use]
 extern crate alloc;
 
@@ -59,7 +56,8 @@ pub mod lib {
         pub use core::borrow;
 
         #[cfg(feature = "alloc")]
-        pub use alloc::{borrow, boxed, string, vec};
+        pub use alloc::{borrow, boxed, vec};
+
 
         #[doc(hidden)]
         pub use core::{cmp, convert, fmt, iter, mem, num, ops, option, result, slice, str};
